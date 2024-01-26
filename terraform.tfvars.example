@@ -1,0 +1,15 @@
+# Required for VM-Series tutorial
+project_id             = null
+public_key_path        = "~/.ssh/vmseries-tutorial.pub"
+mgmt_allow_ips         = ["0.0.0.0/0"]
+create_test_vms        = true
+vmseries_image         = "https://www.googleapis.com/compute/v1/projects/paloaltonetworksgcp-public/global/images/vmseries-flex-bundle1-1102" // View public images: `gcloud compute images list --project paloaltonetworksgcp-public --no-standard-images --uri`
+
+# Optional for VM-Series tutorial
+prefix                 = ""
+region                 = "us-central1"
+subnet_cidr_mgmt       = "10.0.0.0/28"
+subnet_cidr_untrust    = "10.0.1.0/28"
+subnet_cidr_untrust_lb = "10.0.1.16/28"
+subnet_cidr_trust      = "10.0.2.0/28"
+subnet_cidr_external   = "192.168.0.0/28"
