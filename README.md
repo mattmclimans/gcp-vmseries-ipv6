@@ -5,7 +5,7 @@ This tutorial shows how to deploy and configure Palo Alto Networks VM-Series to 
 This guide is intended for network administrators, solution architects, and security professionals who are very familiar with [Compute Engine](https://cloud.google.com/compute) and [Virtual Private Cloud (VPC) networking](https://cloud.google.com/vpc).
 
 >[!WARNING]
->IPv6 support for VM-Series on Google Cloud is currently not supported.  This open-source tutorial represents a best-effort to demonstrate how VM-Series can be used to secure IPv6 traffic on Google Cloud.
+>IPv6 support for VM-Series on Google Cloud is currently not supported.  This open-source tutorial represents a best-effort to demonstrate how VM-Series secures IPv6 traffic on Google Cloud.
 
 ## Requirements
 
@@ -21,9 +21,9 @@ The diagram shows the resources created with Terraform.
 
 <img src="images/diagram.png">
 
-The VM-Series has 3 network interfaces, each belonging to a dual-stack subnet, and belongs to an unmanaged instance group which serves as the backend service of a external pass-through load balancer.  The load balancer is configured with IPv4 and IPv6 frontend addresses to distribute internet inbound traffic to the VM-Series untrust interface. 
+The VM-Series has 3 network interfaces, each belonging to a dual-stack subnet in separate VPC networks.  The VM-Series is deployed to an unmanaged instance group which is a backend service of an external pass-through load balancer.  The load balancer is configured with IPv4 and IPv6 frontend addresses to distribute internet inbound traffic to the VM-Series for inspection. 
 
-Test workloads are deployed to test north/south traffic.  The `external-vpc` contains an Ubuntu VM to test internet inbound traffic through the VM-Series to the `internal-vm` in the trust network. 
+Test workloads are deployed to test north/south traffic.  The `external-vm` will be used to test internet inbound traffic through the VM-Series to the `internal-vm` in the trust network. 
 
 >[!CAUTION]
 >At the time of this writing, IPv6 traffic cannot be routed to an internal load balancer as the next hop.
