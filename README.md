@@ -17,7 +17,7 @@ The following are required for this tutorial:
 
 The diagram shows the resources created with Terraform.  
 
-<img src="images/diagram.png">
+<img src="img/diagram.png">
 
 The VM-Series has 3 network interfaces, each belonging to a dual-stack subnet, and belongs to an unmanaged instance group which serves as the backend service of a external pass-through load balancer.  The load balancer is configured with IPv4 and IPv6 frontend addresses to distribute internet inbound traffic to the VM-Series untrust interface. 
 
@@ -140,20 +140,20 @@ Enable DHCPv4 and DHCPv6 on the VM-Series network interfaces to handle IPv4/IPv6
 
 2. Create two zones: `untrust` & `trust`.
 
-    <img src="images/image1.png" width=70% >
+    <img src="img/image1.png" width=70% >
 
 3. Go to **Network → Interfaces → Ethernet**. 
 
 4. Configure `ethernet1/1` (`untrust`) as follows:
 
-    <img src="images/image2.png" width=70% >
+    <img src="img/image2.png" width=70% >
 
     > In IPv4 tab, **check** `Automatically create default route`. </br>
     > In IPv6 tab, **check** `Accept Router Advertised Route` and **uncheck** `Enable Prefix Delegation`.
 
 5. Configure `ethernet1/2` (`trust`) as follows:
 
-    <img src="images/image3.png" width=70% >
+    <img src="img/image3.png" width=70% >
 
     > In IPv4 tab, **uncheck** `Automatically create default route`. </br>
     > In IPv6 tab, **uncheck** `Accept Router Advertised Route` and **uncheck** `Enable Prefix Delegation`.
@@ -169,7 +169,7 @@ Retrieve the default gateways for the untrust & trust subnets and the ULA for th
 
 2. Record the **Server** and **IPv6 Address (Non-Temporary)** addresses.
 
-    <img src="images/image4.png" width=40% >
+    <img src="img/image4.png" width=40% >
 
     > **Server** address is the IPv6 default gateway for the untrust network.<br>
     > **IPv6 Address** is the external IPv6 address assigned to the untrust interface.
@@ -178,7 +178,7 @@ Retrieve the default gateways for the untrust & trust subnets and the ULA for th
 
 4. Record the **Server** address.
 
-    <img src="images/image5.png" width=40% >
+    <img src="img/image5.png" width=40% >
 
     > **Server** address is the IPv6 default gateway of the trust network.
 
@@ -186,7 +186,7 @@ Retrieve the default gateways for the untrust & trust subnets and the ULA for th
 
 6. Record the **VPC network ULA internal IPv6 range**.
 
-    <img src="images/image6.png" width=20% >
+    <img src="img/image6.png" width=20% >
 
     > The ULA covers all of the possible IPv6 prefixes within the trust VPC.
 
@@ -200,13 +200,13 @@ On the VM-Series, create an IPv4 & IPv6 routes to correctly return traffic to th
 
 3. Configure the IPv4 return route as follows:
 
-    <img src="images/image7.png" width=40% >
+    <img src="img/image7.png" width=40% >
 
 4. Click **Static Routes → IPv6**.  Click **+ Add**. 
 
 5. Configure the IPv6 return route as follows:
 
-    <img src="images/image8.png" width=40% >
+    <img src="img/image8.png" width=40% >
 
     |                    | IPv4 Route                          | IPv6 Route                   |
     |--------------------|-------------------------------------|------------------------------|
@@ -227,11 +227,11 @@ Create a NAT rule to translate trust VPC traffic to the external IPv4/v6 address
 
 2. Create a NAT policy to translate outbound IPv4 traffic.
 
-    <img src="images/image9.png" width=70% >
+    <img src="img/image9.png" width=70% >
 
 3. Create a NPTv6 NAT policy to translate outbound IPv6 traffic.  
 
-    <img src="images/image10.png" width=70% >
+    <img src="img/image10.png" width=70% >
 
     >Set the **IPv6 Address (Non-Temporary)** IP on `eth1/1` as the translated address (use a `/96` prefix).
 
@@ -247,7 +247,7 @@ For the purposes of this tutorial, create a security policy to allow `ping`, `pi
 
 2. Configure the security policy to allow `ping`, `ping6`, & `web-browsing`.
 
-    <img src="images/image11.png" width=70% >
+    <img src="img/image11.png" width=70% >
 
 4. **Commit the changes**.
 
@@ -299,7 +299,7 @@ Access the `internal-vm` in the trust network and generate outbound IPv4/IPv6 in
     ( app eq 'ping6' ) or ( app eq 'ping' )
     ```
 
-    <img src="images/image15.png" width=70%>
+    <img src="img/image15.png" width=70%>
 
     >You should see that IPv4 & IPv6 traffic from the `internal-vm` is translated correctly by the VM-Series.
 
@@ -321,37 +321,37 @@ Setup a loopback interface to receive the load balancer's IPv4/IPv6 health check
 
 2. Click the `vmseries-extlb` load balancer. Record the IPv6 address assigned to the forwarding rule.
 
-    <img src="images/image17.png" width=70% >
+    <img src="img/image17.png" width=70% >
 
 3. On the VM-Series, go to **Network → Zones**. Click **Add**.
 
 4. Create a zone called `lb-checks`.
 
-    <img src="images/image18.png" width=40% >
+    <img src="img/image18.png" width=40% >
 
 5. Go to **Network → Network Profiles → Interface Mgmt**. click **Add**.
 
 6. Enable `HTTP` and add the [Health Check Ranges](https://cloud.google.com/load-balancing/docs/health-checks#fw-netlb) (`35.191.0.0/16`, `209.85.152.0/22`, `209.85.204.0/22`, `2600:1901:8001::/48`) as permitted addresses.
     
-    <img src="images/image19.png" width=40% >
+    <img src="img/image19.png" width=40% >
 
 7. Go to **Network → Interfaces → Loopback**. Click **Add**.
 
 8. In the **Config Tab**, set tunnel to `1`, **Virtual Router** to `default`, & **Zone** to `lb-checks`.
     
-    <img src="images/image20.png" width=40% >
+    <img src="img/image20.png" width=40% >
 
 9. In the **IPv4 Tab**, set `100.64.0.1/32` as the address.
     
-    <img src="images/image21.png" width=40% >
+    <img src="img/image21.png" width=40% >
 
 10. In the **IPv6 Tab**, set load balancer's IPv6 forwarding rule address.
     
-    <img src="images/image22.png" width=40% >
+    <img src="img/image22.png" width=40% >
 
 11. In the **Advanced Tab**, set the **Management Profile** to `lb-checks`
 
-    <img src="images/image23.png" width=40% >
+    <img src="img/image23.png" width=40% >
 
 
 #### Create NAT for IPv4 Health Checks
@@ -360,7 +360,7 @@ Setup a loopback interface to receive the load balancer's IPv4/IPv6 health check
 
 2. Configure the policy to translate the IPv4 health check ranges to the IPv4 loopback address.
 
-    <img src="images/image24.png" width=50% >
+    <img src="img/image24.png" width=50% >
 
 #### Create Security Policy for IPv4/IPv6 Health Checks
 
@@ -368,7 +368,7 @@ Setup a loopback interface to receive the load balancer's IPv4/IPv6 health check
 
 2. Configure the policy to allow IPv4 & IPv6 health check ranges to the `lb-checks` zone.
    
-    <img src="images/image25.png" width=80% >
+    <img src="img/image25.png" width=80% >
 
 > [!Important]
 > Move the policy to the top of the rule set before committing the changes.
@@ -377,7 +377,7 @@ Setup a loopback interface to receive the load balancer's IPv4/IPv6 health check
 
 4. In Google Cloud, verify the health checks are up on the `vmseries-extlb`. 
     
-    <img src="images/image26.png" width=70% >
+    <img src="img/image26.png" width=70% >
 
 
 ### Configure NAT Policy for IPv4 Forwarding Rule
@@ -386,13 +386,13 @@ Create a NAT policy to translate traffic destined to the IPv4 forwarding rule to
 
 1. In Google Cloud, record IPv4 & IPv6 addresses of the `internal-vm`.
     
-    <img src="images/image27.png" width=70% >
+    <img src="img/image27.png" width=70% >
 
 2. On the VM-Series, go to **Policies → NAT**. Click **Add**.  
 
 3. Configure the policy to translate the IPv4 forwarding rule to the `internal-vm` IPv4 address.
 
-    <img src="images/image28.png" width=70% >
+    <img src="img/image28.png" width=70% >
 
     | NAT Policy             |                       |                                               |
     |------------------------|-----------------------|-----------------------------------------------|
@@ -452,7 +452,7 @@ Create an NPTv6 policy to translate traffic destined to the IPv6 forwarding rule
 
 2. Configure the policy to translate the checksum IP to the `internal-vm` IPv6 address.
 
-    <img src="images/image29.png" width=70% >
+    <img src="img/image29.png" width=70% >
 
     | NPTv6 Policy           |                       |                                                                |
     |------------------------|-----------------------|----------------------------------------------------------------|
@@ -495,7 +495,7 @@ Access the `external-vm` to test internet inbound traffic through the IPv4/IPv6 
     ( zone.src eq 'untrust' ) and ( zone.dst eq 'trust' ) and ( app eq 'web-browsing' )
     ```
     
-    <img src="images/image30.png" width=80%>
+    <img src="img/image30.png" width=80%>
 
     > You should see that both IPv4 and IPv6 traffic is inspected and translated correctly by the VM-Series firewall.
 
