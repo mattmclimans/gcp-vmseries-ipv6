@@ -23,7 +23,7 @@ The VM-Series has 3 network interfaces, each belonging to a dual-stack subnet, a
 
 Test workloads are deployed to test north/south traffic.  The `external-vpc` contains an Ubuntu VM to test internet inbound traffic through the VM-Series to the `internal-vm` in the trust network. 
 
->[!IMPORTANT]
+>[!WARNING]
 >At the time of this writing, IPv6 traffic cannot be routed to an internal load balancer as the next hop.
 
 
